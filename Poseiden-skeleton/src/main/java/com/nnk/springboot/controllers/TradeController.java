@@ -26,7 +26,7 @@ public class TradeController {
     public String home(Model model)
     {
         // TODO: find all Trade, add to model
-        model.addAttribute("trade", tradeService.getTrades());
+        model.addAttribute("trades", tradeService.getTrades());
         return "trade/list";
     }
 
@@ -42,7 +42,6 @@ public class TradeController {
             return "trade/add";
         }
         tradeService.addTrade(trade);
-        model.addAttribute("trade", tradeService.getTrades());
         return "trade/list";
     }
 
@@ -64,7 +63,6 @@ public class TradeController {
         }
 
         tradeService.updateTrade(id, trade);
-        model.addAttribute("trades", tradeService.getTrades());
         return "redirect:/trade/list";
     }
 
@@ -72,7 +70,6 @@ public class TradeController {
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
         // TODO: Find Trade by Id and delete the Trade, return to Trade list
         tradeService.deleteTrade(id);
-        model.addAttribute("trade", tradeService.getTrades());
         return "redirect:/trade/list";
     }
 }
