@@ -1,9 +1,12 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.domain.User;
+import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.services.RatingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,11 +23,13 @@ public class RatingController {
     @Autowired
     private RatingService ratingService;
 
+
     @RequestMapping("/rating/list")
     public String home(Model model)
     {
         // TODO: find all Rating, add to model
         model.addAttribute("ratings", ratingService.getRatings());
+        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "rating/list";
     }
 
@@ -36,11 +41,12 @@ public class RatingController {
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Rating list
-        if (result.hasErrors()) {
-            return "rating/add";
+        if (!result.hasErrors()) {
+            ratingService.addRating(rating);
+            return "redirect:/rating/list";
         }
-        ratingService.addRating(rating);
-        return "redirect:/rating/list";
+        return "rating/add";
+
     }
 
     @GetMapping("/rating/update/{id}")

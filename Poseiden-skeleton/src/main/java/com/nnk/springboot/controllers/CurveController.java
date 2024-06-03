@@ -1,9 +1,11 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.services.CurveService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,11 +21,13 @@ public class CurveController {
     @Autowired
     private CurveService curveService;
 
+
     @RequestMapping("/curvePoint/list")
     public String home(Model model)
     {
         // TODO: find all Curve Point, add to model
         model.addAttribute("curvePoints", curveService.getAllCurvePoints());
+        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "curvePoint/list";
     }
 
@@ -35,11 +39,11 @@ public class CurveController {
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Curve list
-        if (result.hasErrors()) {
-            return "curvePoint/add";
+        if (!result.hasErrors()) {
+            curveService.addCurvePoint(curvePoint);
+            return "redirect:/curvePoint/list";
         }
-        curveService.addCurvePoint(curvePoint);
-        return "redirect:/curvePoint/list";
+        return "curvePoint/add";
     }
 
     @GetMapping("/curvePoint/update/{id}")

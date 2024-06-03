@@ -12,28 +12,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableWebSecurity
 public class SpringSecurityConfig {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/register").permitAll(); // Permit access to registration page
-                    auth.requestMatchers("/*").authenticated(); // Require authentication for other endpoints
-                }).formLogin(form -> form.loginPage("/login") // Configure custom login page
-                        .loginProcessingUrl("/login") // Set login processing URL
-                        .defaultSuccessUrl("/home", true) // Redirect to home page after successful login
-                        .permitAll())
-                .logout(
-                        logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Configure logout URL
-                                .permitAll()).build();
-    }
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -46,5 +28,4 @@ public class SpringSecurityConfig {
         authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
         return authenticationManagerBuilder.build();
     }
-
 }

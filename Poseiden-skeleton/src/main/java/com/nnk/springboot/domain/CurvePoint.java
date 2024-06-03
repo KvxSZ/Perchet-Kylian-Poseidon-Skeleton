@@ -30,6 +30,13 @@ public class CurvePoint {
     public CurvePoint(int i, double v, double v1) {
     }
 
+    public CurvePoint() {
+
+    }
+
+    public CurvePoint(int i, int i1, double v, double v1) {
+    }
+
     // Getters and setters
     public Integer getId() {
         return id;

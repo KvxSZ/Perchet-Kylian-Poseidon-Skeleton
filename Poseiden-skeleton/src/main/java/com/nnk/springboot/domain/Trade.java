@@ -72,15 +72,19 @@ public class Trade {
     @Column(name = "side", length = 125)
     private String side;
 
-    public Trade(String tradeAccount, String type) {
+    public Trade(String tradeAccount, String type, double v) {
+    }
+
+    public Trade() {
+
     }
 
     // Getters and setters
-    public Integer getTradeId() {
+    public Integer getId() {
         return tradeId;
     }
 
-    public void setTradeId(Integer tradeId) {
+    public void setId(Integer tradeId) {
         this.tradeId = tradeId;
     }
 

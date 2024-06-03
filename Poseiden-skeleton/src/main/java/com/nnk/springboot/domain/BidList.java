@@ -78,12 +78,16 @@ public class BidList {
     public BidList(String accountTest, String typeTest, double v) {
     }
 
+    public BidList() {
+
+    }
+
     // Getters and setters
-    public Integer getBidListId() {
+    public Integer getId() {
         return bidListId;
     }
 
-    public void setBidListId(Integer bidListId) {
+    public void setId(Integer bidListId) {
         this.bidListId = bidListId;
     }
 

@@ -1,7 +1,6 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.RuleName;
-import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class RuleNameService {
         ruleName.setDescription(ruleNameDetails.getDescription());
         ruleName.setJson(ruleNameDetails.getJson());
         ruleName.setTemplate(ruleNameDetails.getTemplate());
-        ruleName.setSqlStr(ruleNameDetails.getSqlStr());
+        ruleName.setSql(ruleNameDetails.getSql());
         ruleName.setSqlPart(ruleNameDetails.getSqlPart());
 
         return ruleNameRepository.save(ruleName);
@@ -41,7 +40,7 @@ public class RuleNameService {
     @Transactional
     public void deleteRuleName(Integer id) {
         RuleName ruleName = ruleNameRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid trade Id:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid rule name Id:" + id));
         ruleNameRepository.delete(ruleName);
     }
 

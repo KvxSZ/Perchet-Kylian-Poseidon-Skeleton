@@ -2,8 +2,11 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.services.RuleNameService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RuleNameController {
     // TODO: Inject RuleName service
+    @Autowired
     RuleNameService ruleNameService;
+
 
     @RequestMapping("/ruleName/list")
     public String home(Model model)
     {
         // TODO: find all RuleName, add to model
         model.addAttribute("ruleNames", ruleNameService.getRuleNames());
+        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "ruleName/list";
     }
 
@@ -34,11 +40,11 @@ public class RuleNameController {
     @PostMapping("/ruleName/validate")
     public String validate(@Valid RuleName ruleName, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return RuleName list
-        if (result.hasErrors()) {
-            return "ruleName/add";
+        if (!result.hasErrors()) {
+            ruleNameService.addRuleName(ruleName);
+            return "redirect:/ruleName/list";
         }
-        ruleNameService.addRuleName(ruleName);
-        return "redirect:/ruleName/list";
+        return "ruleName/add";
     }
 
     @GetMapping("/ruleName/update/{id}")

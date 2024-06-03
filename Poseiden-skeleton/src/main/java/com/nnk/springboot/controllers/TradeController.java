@@ -1,9 +1,11 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.services.TradeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,12 +23,12 @@ public class TradeController {
     @Autowired
     TradeService tradeService;
 
-
     @RequestMapping("/trade/list")
     public String home(Model model)
     {
         // TODO: find all Trade, add to model
         model.addAttribute("trades", tradeService.getTrades());
+        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "trade/list";
     }
 
@@ -39,10 +41,11 @@ public class TradeController {
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Trade list
         if(!result.hasErrors()){
-            return "trade/add";
+            System.out.println("yes");
+            tradeService.addTrade(trade);
+            return "redirect:/trade/list";
         }
-        tradeService.addTrade(trade);
-        return "trade/list";
+        return "trade/add";
     }
 
     @GetMapping("/trade/update/{id}")

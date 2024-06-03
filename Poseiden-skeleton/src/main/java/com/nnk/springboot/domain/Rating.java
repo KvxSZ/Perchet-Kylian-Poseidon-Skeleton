@@ -26,6 +26,10 @@ public class Rating {
     public Rating(String moodysRating, String sandPRating, String fitchRating, int i) {
     }
 
+    public Rating() {
+
+    }
+
     // Getters and setters
     public Integer getId() {
         return id;

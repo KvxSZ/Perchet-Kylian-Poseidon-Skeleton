@@ -32,6 +32,10 @@ public class RuleName {
     public RuleName(String ruleName, String description, String json, String template, String sql, String sqlPart) {
     }
 
+    public RuleName() {
+
+    }
+
     // Getters and setters
     public Integer getId() {
         return id;
@@ -73,11 +77,11 @@ public class RuleName {
         this.template = template;
     }
 
-    public String getSqlStr() {
+    public String getSql() {
         return sqlStr;
     }
 
-    public void setSqlStr(String sqlStr) {
+    public void setSql(String sqlStr) {
         this.sqlStr = sqlStr;
     }
 

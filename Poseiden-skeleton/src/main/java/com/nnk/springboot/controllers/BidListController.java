@@ -1,9 +1,11 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.services.BidListService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,11 +22,13 @@ public class BidListController {
     @Autowired
     private BidListService bidListService;
 
+
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
         // TODO: call service find all bids to show to the view
         model.addAttribute("bidLists", bidListService.getAllBids());
+        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "bidList/list";
     }
 
@@ -36,11 +40,11 @@ public class BidListController {
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return bid list
-        if (result.hasErrors()) {
-            return "bidList/add";
+        if (!result.hasErrors()) {
+            bidListService.addBid(bid);
+            return "redirect:/bidList/list";
         }
-        bidListService.addBid(bid);
-        return "redirect:/bidList/list";
+        return "bidList/add";
     }
 
     @GetMapping("/bidList/update/{id}")
