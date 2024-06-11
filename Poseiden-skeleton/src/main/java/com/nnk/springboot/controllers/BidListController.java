@@ -47,6 +47,12 @@ public class BidListController {
         return "bidList/add";
     }
 
+    /**
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         // TODO: get Bid by Id and to model then show to the form

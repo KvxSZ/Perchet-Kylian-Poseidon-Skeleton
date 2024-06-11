@@ -4,6 +4,7 @@ import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class BidListService {
         bidListRepository.save(bid);
     }
 
+    @Transactional
     public void updateBid(Integer id, BidList bidDetails) {
         BidList bid = bidListRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Bid Id: " + id));
@@ -55,6 +57,7 @@ public class BidListService {
         bidListRepository.save(bid);
     }
 
+    @Transactional
     public void deleteBid(Integer id) {
         BidList bid = bidListRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Bid Id: " + id));

@@ -70,7 +70,7 @@ public class TradeServiceTest {
     @Test
     void updateTrade() {
         Trade existingTrade = new Trade();
-        existingTrade.setTradeId(1);
+        existingTrade.setId(1);
         existingTrade.setAccount("Account1");
         existingTrade.setType("Type1");
         existingTrade.setBuyQuantity(100.0);
@@ -92,7 +92,7 @@ public class TradeServiceTest {
     @Test
     void deleteTrade() {
         Trade trade = new Trade("Account1", "Type1", 100.0);
-        trade.setTradeId(1);
+        trade.setId(1);
         when(tradeRepository.findById(1)).thenReturn(Optional.of(trade));
 
         tradeService.deleteTrade(1);

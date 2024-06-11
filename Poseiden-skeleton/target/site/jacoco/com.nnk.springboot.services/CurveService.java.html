@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurveService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring-boot-skeleton</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.services</a> &gt; <span class="el_source">CurveService.java</span></div><h1>CurveService.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.services;
+
+import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.repositories.CurvePointRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L12">public class CurveService {</span>
+
+    @Autowired
+    private CurvePointRepository curvePointRepository;
+
+    public List&lt;CurvePoint&gt; getAllCurvePoints() {
+<span class="fc" id="L18">        return curvePointRepository.findAll();</span>
+    }
+
+    public Optional&lt;CurvePoint&gt; getCurvePointById(Integer id) {
+<span class="fc" id="L22">        return curvePointRepository.findById(id);</span>
+    }
+
+    public void addCurvePoint(CurvePoint curvePoint) {
+<span class="fc" id="L26">        curvePointRepository.save(curvePoint);</span>
+<span class="fc" id="L27">    }</span>
+
+    public void updateCurvePoint(Integer id, CurvePoint curvePointDetails) {
+<span class="fc" id="L30">        CurvePoint curvePoint = curvePointRepository.findById(id)</span>
+<span class="fc" id="L31">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Invalid CurvePoint Id: &quot; + id));</span>
+
+<span class="fc" id="L33">        curvePoint.setCurveId(curvePointDetails.getCurveId());</span>
+<span class="fc" id="L34">        curvePoint.setAsOfDate(curvePointDetails.getAsOfDate());</span>
+<span class="fc" id="L35">        curvePoint.setTerm(curvePointDetails.getTerm());</span>
+<span class="fc" id="L36">        curvePoint.setValue(curvePointDetails.getValue());</span>
+<span class="fc" id="L37">        curvePoint.setCreationDate(curvePointDetails.getCreationDate());</span>
+
+<span class="fc" id="L39">        curvePointRepository.save(curvePoint);</span>
+<span class="fc" id="L40">    }</span>
+
+    public void deleteCurvePoint(Integer id) {
+<span class="fc" id="L43">        CurvePoint curvePoint = curvePointRepository.findById(id)</span>
+<span class="fc" id="L44">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Invalid CurvePoint Id: &quot; + id));</span>
+<span class="fc" id="L45">        curvePointRepository.delete(curvePoint);</span>
+<span class="fc" id="L46">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
