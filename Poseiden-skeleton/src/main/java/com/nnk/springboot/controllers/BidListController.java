@@ -13,31 +13,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
-
 @Controller
 public class BidListController {
+
     @Autowired
     private BidListService bidListService;
 
-
     /**
-     * Call service find all bids to show to the view
-     * @param model
-     * @return bid list
+     * Displays the list of all bids.
+     *
+     * @param model the model to add attributes to
+     * @return the view name for the bid list
      */
     @RequestMapping("/bidList/list")
-    public String home(Model model)
-    {
+    public String home(Model model) {
         model.addAttribute("bidLists", bidListService.getAllBids());
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "bidList/list";
     }
 
     /**
+     * Displays the form to add a new bid.
      *
-     * @param bid
-     * @return
+     * @param bid the bid to be added
+     * @return the view name for adding a new bid
      */
     @GetMapping("/bidList/add")
     public String addBidForm(BidList bid) {
@@ -45,11 +44,12 @@ public class BidListController {
     }
 
     /**
-     * Check data valid and save to db, after saving return bid list
-     * @param bid
-     * @param result
-     * @param model
-     * @return
+     * Validates and saves a new bid to the database, then redirects to the bid list.
+     *
+     * @param bid the bid to be validated and saved
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the bid list if successful, otherwise the view name for adding a new bid
      */
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
@@ -61,11 +61,11 @@ public class BidListController {
     }
 
     /**
+     * Displays the form to update an existing bid.
      *
-     * Get Bid by Id and to model then show to the form
-     * @param id
-     * @param model
-     * @return bid list
+     * @param id the ID of the bid to be updated
+     * @param model the model to add attributes to
+     * @return the view name for updating a bid
      */
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
@@ -76,16 +76,17 @@ public class BidListController {
     }
 
     /**
-     * Check required fields, if valid call service to update Bid and return list Bid
-     * @param id
-     * @param bidList
-     * @param result
-     * @param model
-     * @return
+     * Validates and updates an existing bid, then redirects to the bid list.
+     *
+     * @param id the ID of the bid to be updated
+     * @param bidList the bid to be updated
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the bid list if successful, otherwise the view name for updating a bid
      */
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
-                             BindingResult result, Model model) {
+                            BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("bidList", bidList);
             return "bidList/update";
@@ -95,10 +96,11 @@ public class BidListController {
     }
 
     /**
-     * Find Bid by Id and delete the bid, return to Bid list
-     * @param id
-     * @param model
-     * @return
+     * Deletes an existing bid and redirects to the bid list.
+     *
+     * @param id the ID of the bid to be deleted
+     * @param model the model to add attributes to
+     * @return the redirect URL to the bid list
      */
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {

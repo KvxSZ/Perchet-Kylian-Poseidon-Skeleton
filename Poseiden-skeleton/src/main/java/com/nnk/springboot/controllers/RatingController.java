@@ -14,29 +14,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-
 @Controller
 public class RatingController {
     @Autowired
     private RatingService ratingService;
 
     /**
-     * Find all Rating, add to model
-     * @param model
-     * @return
+     * Displays the list of all Ratings.
+     *
+     * @param model the model to add attributes to
+     * @return the view name for the rating list
      */
     @RequestMapping("/rating/list")
-    public String home(Model model)
-    {
+    public String home(Model model) {
         model.addAttribute("ratings", ratingService.getRatings());
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "rating/list";
     }
 
     /**
+     * Displays the form to add a new Rating.
      *
-     * @param rating
-     * @return
+     * @param rating the rating to be added
+     * @return the view name for adding a new rating
      */
     @GetMapping("/rating/add")
     public String addRatingForm(Rating rating) {
@@ -44,11 +44,12 @@ public class RatingController {
     }
 
     /**
-     * Check data valid and save to db, after saving return Rating list
-     * @param rating
-     * @param result
-     * @param model
-     * @return
+     * Validates and saves a new Rating to the database, then redirects to the Rating list.
+     *
+     * @param rating the rating to be validated and saved
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the rating list if successful, otherwise the view name for adding a new rating
      */
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
@@ -57,14 +58,14 @@ public class RatingController {
             return "redirect:/rating/list";
         }
         return "rating/add";
-
     }
 
     /**
-     * Get Rating by Id and to model then show to the form
-     * @param id
-     * @param model
-     * @return
+     * Displays the form to update an existing Rating.
+     *
+     * @param id the ID of the rating to be updated
+     * @param model the model to add attributes to
+     * @return the view name for updating a rating
      */
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
@@ -75,16 +76,17 @@ public class RatingController {
     }
 
     /**
-     * Check required fields, if valid call service to update Rating and return Rating list
-     * @param id
-     * @param rating
-     * @param result
-     * @param model
-     * @return
+     * Validates and updates an existing Rating, then redirects to the Rating list.
+     *
+     * @param id the ID of the rating to be updated
+     * @param rating the rating to be updated
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the rating list if successful, otherwise the view name for updating a rating
      */
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
-                             BindingResult result, Model model) {
+                               BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("rating", rating);
             return "rating/update";
@@ -94,10 +96,11 @@ public class RatingController {
     }
 
     /**
-     * Find Rating by Id and delete the Rating, return to Rating list
-     * @param id
-     * @param model
-     * @return
+     * Deletes an existing Rating and redirects to the Rating list.
+     *
+     * @param id the ID of the rating to be deleted
+     * @param model the model to add attributes to
+     * @return the redirect URL to the rating list
      */
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {

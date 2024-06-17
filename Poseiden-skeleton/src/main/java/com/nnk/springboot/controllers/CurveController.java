@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 @Controller
 public class CurveController {
 
@@ -21,35 +20,36 @@ public class CurveController {
     private CurveService curveService;
 
     /**
-     * Find all Curve Point, add to model
-     * @param model
-     * @return
+     * Displays the list of all CurvePoints.
+     *
+     * @param model the model to add attributes to
+     * @return the view name for the curve point list
      */
     @RequestMapping("/curvePoint/list")
-    public String home(Model model)
-    {
-
+    public String home(Model model) {
         model.addAttribute("curvePoints", curveService.getAllCurvePoints());
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "curvePoint/list";
     }
 
     /**
+     * Displays the form to add a new CurvePoint.
      *
-     * @param bid
-     * @return
+     * @param curvePoint the curve point to be added
+     * @return the view name for adding a new curve point
      */
     @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint bid) {
+    public String addCurvePointForm(CurvePoint curvePoint) {
         return "curvePoint/add";
     }
 
     /**
-     * Check data valid and save to db, after saving return Curve list
-     * @param curvePoint
-     * @param result
-     * @param model
-     * @return
+     * Validates and saves a new CurvePoint to the database, then redirects to the CurvePoint list.
+     *
+     * @param curvePoint the curve point to be validated and saved
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the curve point list if successful, otherwise the view name for adding a new curve point
      */
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
@@ -61,10 +61,11 @@ public class CurveController {
     }
 
     /**
-     * Get CurvePoint by Id and to model then show to the form
-     * @param id
-     * @param model
-     * @return
+     * Displays the form to update an existing CurvePoint.
+     *
+     * @param id the ID of the curve point to be updated
+     * @param model the model to add attributes to
+     * @return the view name for updating a curve point
      */
     @GetMapping("/curvePoint/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
@@ -75,16 +76,17 @@ public class CurveController {
     }
 
     /**
-     * Check required fields, if valid call service to update Curve and return Curve list
-     * @param id
-     * @param curvePoint
-     * @param result
-     * @param model
-     * @return
+     * Validates and updates an existing CurvePoint, then redirects to the CurvePoint list.
+     *
+     * @param id the ID of the curve point to be updated
+     * @param curvePoint the curve point to be updated
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the curve point list if successful, otherwise the view name for updating a curve point
      */
     @PostMapping("/curvePoint/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
-                             BindingResult result, Model model) {
+    public String updateCurvePoint(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
+                                   BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("curvePoint", curvePoint);
             return "curvePoint/update";
@@ -94,13 +96,14 @@ public class CurveController {
     }
 
     /**
-     * Find Curve by Id and delete the Curve, return to Curve list
-     * @param id
-     * @param model
-     * @return
+     * Deletes an existing CurvePoint and redirects to the CurvePoint list.
+     *
+     * @param id the ID of the curve point to be deleted
+     * @param model the model to add attributes to
+     * @return the redirect URL to the curve point list
      */
     @GetMapping("/curvePoint/delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
+    public String deleteCurvePoint(@PathVariable("id") Integer id, Model model) {
         curveService.deleteCurvePoint(id);
         return "redirect:/curvePoint/list";
     }

@@ -14,66 +14,96 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 
 
 @Controller
-<span class="fc" id="L21">public class TradeController {</span>
-    // TODO: Inject Trade service
+<span class="fc" id="L20">public class TradeController {</span>
     @Autowired
     TradeService tradeService;
 
+    /**
+     * Find all Trade, add to model
+     * @param model
+     * @return
+     */
     @RequestMapping(&quot;/trade/list&quot;)
     public String home(Model model)
     {
-        // TODO: find all Trade, add to model
-<span class="fc" id="L30">        model.addAttribute(&quot;trades&quot;, tradeService.getTrades());</span>
-<span class="fc" id="L31">        model.addAttribute(&quot;username&quot;, SecurityContextHolder.getContext().getAuthentication().getName());</span>
-<span class="fc" id="L32">        return &quot;trade/list&quot;;</span>
+<span class="fc" id="L32">        model.addAttribute(&quot;trades&quot;, tradeService.getTrades());</span>
+<span class="fc" id="L33">        model.addAttribute(&quot;username&quot;, SecurityContextHolder.getContext().getAuthentication().getName());</span>
+<span class="fc" id="L34">        return &quot;trade/list&quot;;</span>
     }
 
+    /**
+     *
+     * @param bid
+     * @return
+     */
     @GetMapping(&quot;/trade/add&quot;)
     public String addUser(Trade bid) {
-<span class="fc" id="L37">        return &quot;trade/add&quot;;</span>
+<span class="fc" id="L44">        return &quot;trade/add&quot;;</span>
     }
 
+    /**
+     * Check data valid and save to db, after saving return Trade list
+     * @param trade
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping(&quot;/trade/validate&quot;)
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Trade list
-<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if(!result.hasErrors()){</span>
-<span class="fc" id="L44">            System.out.println(&quot;yes&quot;);</span>
-<span class="fc" id="L45">            tradeService.addTrade(trade);</span>
-<span class="fc" id="L46">            return &quot;redirect:/trade/list&quot;;</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if(!result.hasErrors()){</span>
+<span class="fc" id="L57">            System.out.println(&quot;yes&quot;);</span>
+<span class="fc" id="L58">            tradeService.addTrade(trade);</span>
+<span class="fc" id="L59">            return &quot;redirect:/trade/list&quot;;</span>
         }
-<span class="nc" id="L48">        return &quot;trade/add&quot;;</span>
+<span class="nc" id="L61">        return &quot;trade/add&quot;;</span>
     }
 
+    /**
+     * Get Trade by Id and to model then show to the form
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping(&quot;/trade/update/{id}&quot;)
     public String showUpdateForm(@PathVariable(&quot;id&quot;) Integer id, Model model) {
-        // TODO: get Trade by Id and to model then show to the form
-<span class="pc" id="L54">        Trade trade = tradeService.getTradeById(id).orElseThrow(() -&gt; new IllegalArgumentException(&quot;Invalid trade Id:&quot; + id));</span>
-<span class="fc" id="L55">        model.addAttribute(&quot;trade&quot;, trade);</span>
-<span class="fc" id="L56">        return &quot;trade/update&quot;;</span>
+<span class="pc" id="L72">        Trade trade = tradeService.getTradeById(id).orElseThrow(() -&gt; new IllegalArgumentException(&quot;Invalid trade Id:&quot; + id));</span>
+<span class="fc" id="L73">        model.addAttribute(&quot;trade&quot;, trade);</span>
+<span class="fc" id="L74">        return &quot;trade/update&quot;;</span>
     }
 
+    /**
+     * Check required fields, if valid call service to update Trade and return Trade list
+     * @param id
+     * @param trade
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping(&quot;/trade/update/{id}&quot;)
     public String updateTrade(@PathVariable(&quot;id&quot;) Integer id, @Valid Trade trade,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Trade and return Trade list
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (result.hasErrors()) {</span>
-<span class="nc" id="L64">            model.addAttribute(&quot;trade&quot;, trade);</span>
-<span class="nc" id="L65">            return &quot;trade/update&quot;;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (result.hasErrors()) {</span>
+<span class="nc" id="L89">            model.addAttribute(&quot;trade&quot;, trade);</span>
+<span class="nc" id="L90">            return &quot;trade/update&quot;;</span>
         }
 
-<span class="fc" id="L68">        tradeService.updateTrade(id, trade);</span>
-<span class="fc" id="L69">        return &quot;redirect:/trade/list&quot;;</span>
+<span class="fc" id="L93">        tradeService.updateTrade(id, trade);</span>
+<span class="fc" id="L94">        return &quot;redirect:/trade/list&quot;;</span>
     }
 
+    /**
+     * Find Trade by Id and delete the Trade, return to Trade list
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping(&quot;/trade/delete/{id}&quot;)
     public String deleteTrade(@PathVariable(&quot;id&quot;) Integer id, Model model) {
-        // TODO: Find Trade by Id and delete the Trade, return to Trade list
-<span class="fc" id="L75">        tradeService.deleteTrade(id);</span>
-<span class="fc" id="L76">        return &quot;redirect:/trade/list&quot;;</span>
+<span class="fc" id="L105">        tradeService.deleteTrade(id);</span>
+<span class="fc" id="L106">        return &quot;redirect:/trade/list&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

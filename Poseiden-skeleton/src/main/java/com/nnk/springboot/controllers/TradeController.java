@@ -1,7 +1,6 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Trade;
-import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.services.TradeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,46 +14,46 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-
 @Controller
 public class TradeController {
     @Autowired
     TradeService tradeService;
 
     /**
-     * Find all Trade, add to model
-     * @param model
-     * @return
+     * Displays the list of all Trades.
+     *
+     * @param model the model to add attributes to
+     * @return the view name for the Trade list
      */
     @RequestMapping("/trade/list")
-    public String home(Model model)
-    {
+    public String home(Model model) {
         model.addAttribute("trades", tradeService.getTrades());
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "trade/list";
     }
 
     /**
+     * Displays the form to add a new Trade.
      *
-     * @param bid
-     * @return
+     * @param trade the Trade to be added
+     * @return the view name for adding a new Trade
      */
     @GetMapping("/trade/add")
-    public String addUser(Trade bid) {
+    public String addUser(Trade trade) {
         return "trade/add";
     }
 
     /**
-     * Check data valid and save to db, after saving return Trade list
-     * @param trade
-     * @param result
-     * @param model
-     * @return
+     * Validates and saves a new Trade to the database, then redirects to the Trade list.
+     *
+     * @param trade the Trade to be validated and saved
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the Trade list if successful, otherwise the view name for adding a new Trade
      */
     @PostMapping("/trade/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
-        if(!result.hasErrors()){
-            System.out.println("yes");
+        if (!result.hasErrors()) {
             tradeService.addTrade(trade);
             return "redirect:/trade/list";
         }
@@ -62,43 +61,46 @@ public class TradeController {
     }
 
     /**
-     * Get Trade by Id and to model then show to the form
-     * @param id
-     * @param model
-     * @return
+     * Displays the form to update an existing Trade.
+     *
+     * @param id the ID of the Trade to be updated
+     * @param model the model to add attributes to
+     * @return the view name for updating a Trade
      */
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        Trade trade = tradeService.getTradeById(id).orElseThrow(() -> new IllegalArgumentException("Invalid trade Id:" + id));
+        Trade trade = tradeService.getTradeById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid trade Id: " + id));
         model.addAttribute("trade", trade);
         return "trade/update";
     }
 
     /**
-     * Check required fields, if valid call service to update Trade and return Trade list
-     * @param id
-     * @param trade
-     * @param result
-     * @param model
-     * @return
+     * Validates and updates an existing Trade, then redirects to the Trade list.
+     *
+     * @param id the ID of the Trade to be updated
+     * @param trade the Trade to be updated
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the Trade list if successful, otherwise the view name for updating a Trade
      */
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
-                             BindingResult result, Model model) {
+                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("trade", trade);
             return "trade/update";
         }
-
         tradeService.updateTrade(id, trade);
         return "redirect:/trade/list";
     }
 
     /**
-     * Find Trade by Id and delete the Trade, return to Trade list
-     * @param id
-     * @param model
-     * @return
+     * Deletes an existing Trade and redirects to the Trade list.
+     *
+     * @param id the ID of the Trade to be deleted
+     * @param model the model to add attributes to
+     * @return the redirect URL to the Trade list
      */
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {

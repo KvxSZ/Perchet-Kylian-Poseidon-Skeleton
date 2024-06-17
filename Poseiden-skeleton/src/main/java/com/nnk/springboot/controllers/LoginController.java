@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 @RequestMapping("app")
 public class LoginController {
@@ -15,8 +16,9 @@ public class LoginController {
     private UserRepository userRepository;
 
     /**
+     * Displays the login page.
      *
-     * @return
+     * @return a ModelAndView object with the view name set to "login"
      */
     @GetMapping("login")
     public ModelAndView login() {
@@ -26,8 +28,9 @@ public class LoginController {
     }
 
     /**
+     * Displays the list of all users' articles.
      *
-     * @return
+     * @return a ModelAndView object with the list of users and the view name set to "user/list"
      */
     @GetMapping("secure/article-details")
     public ModelAndView getAllUserArticles() {
@@ -38,13 +41,14 @@ public class LoginController {
     }
 
     /**
+     * Displays an error page when the user is not authorized.
      *
-     * @return
+     * @return a ModelAndView object with the error message and the view name set to "403"
      */
     @GetMapping("error")
     public ModelAndView error() {
         ModelAndView mav = new ModelAndView();
-        String errorMessage= "You are not authorized for the requested data.";
+        String errorMessage = "You are not authorized for the requested data.";
         mav.addObject("errorMsg", errorMessage);
         mav.setViewName("403");
         return mav;

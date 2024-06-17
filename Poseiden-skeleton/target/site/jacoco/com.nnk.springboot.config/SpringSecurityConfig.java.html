@@ -17,24 +17,30 @@ import org.springframework.security.web.SecurityFilterChain;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    /**
+     *
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-<span class="nc" id="L22">        return http.authorizeHttpRequests(auth -&gt;{</span>
-<span class="nc" id="L23">            auth.requestMatchers(&quot;/user/*&quot;).hasRole(&quot;ADMIN&quot;);</span>
-<span class="nc" id="L24">            auth.anyRequest().authenticated();</span>
-<span class="nc" id="L25">        }).formLogin(Customizer.withDefaults()).build();</span>
+<span class="nc" id="L28">        return http.authorizeHttpRequests(auth -&gt;{</span>
+<span class="nc" id="L29">            auth.requestMatchers(&quot;/user/*&quot;).hasRole(&quot;ADMIN&quot;);</span>
+<span class="nc" id="L30">            auth.anyRequest().authenticated();</span>
+<span class="nc" id="L31">        }).formLogin(Customizer.withDefaults()).build();</span>
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
-<span class="nc" id="L30">        return new BCryptPasswordEncoder();</span>
+<span class="nc" id="L36">        return new BCryptPasswordEncoder();</span>
     }
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
-<span class="nc" id="L35">        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);</span>
-<span class="nc" id="L36">        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);</span>
-<span class="nc" id="L37">        return authenticationManagerBuilder.build();</span>
+<span class="nc" id="L41">        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);</span>
+<span class="nc" id="L42">        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);</span>
+<span class="nc" id="L43">        return authenticationManagerBuilder.build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

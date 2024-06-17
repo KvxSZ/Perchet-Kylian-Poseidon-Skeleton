@@ -20,34 +20,36 @@ public class RuleNameController {
     RuleNameService ruleNameService;
 
     /**
-     * Find all RuleName, add to model
-     * @param model
-     * @return
+     * Displays the list of all RuleNames.
+     *
+     * @param model the model to add attributes to
+     * @return the view name for the RuleName list
      */
     @RequestMapping("/ruleName/list")
-    public String home(Model model)
-    {
+    public String home(Model model) {
         model.addAttribute("ruleNames", ruleNameService.getRuleNames());
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         return "ruleName/list";
     }
 
     /**
+     * Displays the form to add a new RuleName.
      *
-     * @param bid
-     * @return
+     * @param ruleName the RuleName to be added
+     * @return the view name for adding a new RuleName
      */
     @GetMapping("/ruleName/add")
-    public String addRuleForm(RuleName bid) {
+    public String addRuleForm(RuleName ruleName) {
         return "ruleName/add";
     }
 
     /**
-     * Check data valid and save to db, after saving return RuleName list
-     * @param ruleName
-     * @param result
-     * @param model
-     * @return
+     * Validates and saves a new RuleName to the database, then redirects to the RuleName list.
+     *
+     * @param ruleName the RuleName to be validated and saved
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the RuleName list if successful, otherwise the view name for adding a new RuleName
      */
     @PostMapping("/ruleName/validate")
     public String validate(@Valid RuleName ruleName, BindingResult result, Model model) {
@@ -59,43 +61,46 @@ public class RuleNameController {
     }
 
     /**
-     * Get RuleName by Id and to model then show to the form
-     * @param id
-     * @param model
-     * @return
+     * Displays the form to update an existing RuleName.
+     *
+     * @param id the ID of the RuleName to be updated
+     * @param model the model to add attributes to
+     * @return the view name for updating a RuleName
      */
     @GetMapping("/ruleName/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        RuleName ruleName = ruleNameService.getRuleNameById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ruleName Id:" + id));
+        RuleName ruleName = ruleNameService.getRuleNameById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ruleName Id: " + id));
         model.addAttribute("ruleName", ruleName);
         return "ruleName/update";
     }
 
     /**
-     * Check required fields, if valid call service to update RuleName and return RuleName list
-     * @param id
-     * @param ruleName
-     * @param result
-     * @param model
-     * @return
+     * Validates and updates an existing RuleName, then redirects to the RuleName list.
+     *
+     * @param id the ID of the RuleName to be updated
+     * @param ruleName the RuleName to be updated
+     * @param result the binding result for validation
+     * @param model the model to add attributes to
+     * @return the redirect URL to the RuleName list if successful, otherwise the view name for updating a RuleName
      */
     @PostMapping("/ruleName/update/{id}")
     public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName,
-                             BindingResult result, Model model) {
+                                 BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("ruleName", ruleName);
             return "ruleName/update";
         }
-
         ruleNameService.updateRuleName(id, ruleName);
         return "redirect:/ruleName/list";
     }
 
     /**
-     * Find RuleName by Id and delete the RuleName, return to Rule list
-     * @param id
-     * @param model
-     * @return
+     * Deletes an existing RuleName and redirects to the RuleName list.
+     *
+     * @param id the ID of the RuleName to be deleted
+     * @param model the model to add attributes to
+     * @return the redirect URL to the RuleName list
      */
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRuleName(@PathVariable("id") Integer id, Model model) {

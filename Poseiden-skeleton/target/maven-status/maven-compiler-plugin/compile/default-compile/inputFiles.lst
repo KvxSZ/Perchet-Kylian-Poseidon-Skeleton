@@ -3,6 +3,7 @@ C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\ja
 C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\java\com\nnk\springboot\controllers\RatingController.java
 C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\java\com\nnk\springboot\domain\Rating.java
 C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\java\com\nnk\springboot\repositories\UserRepository.java
+C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\java\com\nnk\springboot\services\UserService.java
 C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\java\com\nnk\springboot\config\CustomUserDetailsService.java
 C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\java\com\nnk\springboot\domain\User.java
 C:\Users\HK\Desktop\OpenClassroom\Projet #7\Projet\Poseiden-skeleton\src\main\java\com\nnk\springboot\controllers\HomeController.java

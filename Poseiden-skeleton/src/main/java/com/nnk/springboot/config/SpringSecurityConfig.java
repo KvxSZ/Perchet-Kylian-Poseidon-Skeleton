@@ -17,19 +17,39 @@ public class SpringSecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    /**
+     * Configures the HTTP Security Filter Chain.
+     *
+     * @param http The HttpSecurity object to configure.
+     * @return Configured SecurityFilterChain.
+     * @throws Exception If an error occurs during configuration.
+     */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        return http.authorizeHttpRequests(auth ->{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/user/*").hasRole("ADMIN");
             auth.anyRequest().authenticated();
         }).formLogin(Customizer.withDefaults()).build();
     }
 
+    /**
+     * Creates a BCrypt password encoder for securing user passwords.
+     *
+     * @return BCryptPasswordEncoder for password security.
+     */
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Creates a custom Authentication Manager using the provided UserDetails service and password encoder.
+     *
+     * @param http The HttpSecurity object to retrieve AuthenticationManagerBuilder from.
+     * @param bCryptPasswordEncoder The BCrypt password encoder for securing user passwords.
+     * @return Configured AuthenticationManager to use the custom UserDetails service and password encoder.
+     * @throws Exception If an error occurs while configuring AuthenticationManagerBuilder.
+     */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
